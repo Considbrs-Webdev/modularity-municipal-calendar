@@ -3,6 +3,7 @@
 namespace ModularityMunicipalCalendar;
 
 use ModularityMunicipalCalendar\Helper\CacheBust;
+use ModularityMunicipalCalendar\Helper\TaxonomyIcons;
 use ModularityMunicipalCalendar\PostType\MunicipalEvent;
 use ModularityMunicipalCalendar\Module\MunicipalCalendar;
 use ModularityMunicipalCalendar\Admin\Settings;
@@ -33,6 +34,62 @@ class App
 
         // Remove advanced term settings for our taxonomies
         add_filter('acf/load_field_group', [$this, 'removeAdvancedTermSettings']);
+
+        // Add view paths for custom archive templates
+        // ONLY use Municipio/viewPaths - this is what Template.php passes to makeView()
+        // The path must be LAST because makeView() prepends in a loop (which reverses order)
+        add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
+        
+        // Add icon helper functions to Archive view data
+        add_filter('Municipio/Template/municipal_event/archive/viewData', [$this, 'addIconHelpersToArchive'], 10, 1);
+    }
+
+    /**
+     * Add plugin view paths to Municipio for custom templates
+     * 
+     * NOTE: BladeService.makeView() prepends paths in a loop, which REVERSES the order!
+     * So to be checked FIRST, our path must be LAST in the array.
+     * 
+     * @param array $paths The existing view paths
+     * @return array The modified view paths
+     */
+    public function addViewPaths(array $paths): array
+    {
+        // Add at the END - will be prepended LAST, so checked FIRST
+        // (BladeService.makeView() prepends paths in a loop, which reverses order)
+        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
+        
+        return $paths;
+    }
+
+    /**
+     * Add icon helper functions to Archive view data
+     * 
+     * @param array $data The view data
+     * @param string|null $template The template name (optional, from filter)
+     * @return array Modified view data
+     */
+    public function addIconHelpersToArchive(array $data, $template = null): array
+    {
+        // Only add helpers for municipal_event archives
+        if (empty($data['postType']) || $data['postType'] !== 'municipal_event') {
+            return $data;
+        }
+        
+        // Add callable functions for getting taxonomy icons
+        $data['getEventPlaceIcon'] = function($post) {
+            return TaxonomyIcons::getTermIcon($post->getId(), 'event_place');
+        };
+        
+        $data['getEventTypeIcon'] = function($post) {
+            return TaxonomyIcons::getTermIcon($post->getId(), 'event_type');
+        };
+        
+        $data['getEventAdministrationIcon'] = function($post) {
+            return TaxonomyIcons::getTermIcon($post->getId(), 'event_administration');
+        };
+        
+        return $data;
     }
 
     /**
