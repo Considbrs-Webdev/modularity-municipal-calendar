@@ -3,7 +3,7 @@
 namespace ModularityMunicipalCalendar;
 
 use ModularityMunicipalCalendar\Helper\CacheBust;
-use ModularityMunicipalCalendar\Helper\TaxonomyIcons;
+use ModularityMunicipalCalendar\Controller\PostsListController;
 use ModularityMunicipalCalendar\PostType\MunicipalEvent;
 use ModularityMunicipalCalendar\Module\MunicipalCalendar;
 use ModularityMunicipalCalendar\Admin\Settings;
@@ -40,8 +40,11 @@ class App
         // The path must be LAST because makeView() prepends in a loop (which reverses order)
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
         
-        // Add icon helper functions to Archive view data
-        add_filter('Municipio/Template/municipal_event/archive/viewData', [$this, 'addIconHelpersToArchive'], 10, 1);
+        // Enrich posts with municipal event data via controller
+        add_filter('Municipio/Template/municipal_event/archive/viewData', function($data, $template = null) {
+            $controller = new PostsListController();
+            return $controller->enrichMunicipalEventPosts($data, $template);
+        }, 10, 2);
     }
 
     /**
@@ -57,39 +60,9 @@ class App
     {
         // Add at the END - will be prepended LAST, so checked FIRST
         // (BladeService.makeView() prepends paths in a loop, which reverses order)
-        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
+        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'source/php/views';
         
         return $paths;
-    }
-
-    /**
-     * Add icon helper functions to Archive view data
-     * 
-     * @param array $data The view data
-     * @param string|null $template The template name (optional, from filter)
-     * @return array Modified view data
-     */
-    public function addIconHelpersToArchive(array $data, $template = null): array
-    {
-        // Only add helpers for municipal_event archives
-        if (empty($data['postType']) || $data['postType'] !== 'municipal_event') {
-            return $data;
-        }
-        
-        // Add callable functions for getting taxonomy icons
-        $data['getEventPlaceIcon'] = function($post) {
-            return TaxonomyIcons::getTermIcon($post->getId(), 'event_place');
-        };
-        
-        $data['getEventTypeIcon'] = function($post) {
-            return TaxonomyIcons::getTermIcon($post->getId(), 'event_type');
-        };
-        
-        $data['getEventAdministrationIcon'] = function($post) {
-            return TaxonomyIcons::getTermIcon($post->getId(), 'event_administration');
-        };
-        
-        return $data;
     }
 
     /**

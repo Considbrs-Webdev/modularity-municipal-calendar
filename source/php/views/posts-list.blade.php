@@ -35,43 +35,30 @@
                             @slot('content')
                                 <ul class="c-municipal-event-card__meta unlist">
                                     {{-- Date/Time --}}
-                                    @php
-                                        $startDate = get_field('start_date', $post->getId());
-                                    @endphp
-                                    @if($startDate)
+                                    @if(!empty($post->municipalEventData->formattedDate))
                                         <li class="c-municipal-event-card__meta-item">
                                             @icon(['icon' => 'fa-solid fa-calendar-days'])@endicon
-                                            <span>{{ date_i18n('j M Y, H:i', strtotime($startDate)) }}</span>
+                                            <span>{{ $post->municipalEventData->formattedDate }}</span>
                                         </li>
                                     @endif
                                     
                                     {{-- Place --}}
-                                    @php
-                                        $places = get_the_terms($post->getId(), 'event_place');
-                                        $place = $places && !is_wp_error($places) ? $places[0] : null;
-                                        $placeIcon = isset($getEventPlaceIcon) ? $getEventPlaceIcon($post) : null;
-                                    @endphp
-                                    @if($place)
+                                    @if(!empty($post->municipalEventData->place))
                                         <li class="c-municipal-event-card__meta-item">
-                                            @if($placeIcon)
-                                                @icon(['icon' => $placeIcon])@endicon
+                                            @if($post->municipalEventData->placeIcon)
+                                                @icon(['icon' => $post->municipalEventData->placeIcon])@endicon
                                             @endif
-                                            <span>{{ $place->name }}</span>
+                                            <span>{{ $post->municipalEventData->place->name }}</span>
                                         </li>
                                     @endif
                                     
                                     {{-- Type of event/meeting --}}
-                                    @php
-                                        $types = get_the_terms($post->getId(), 'event_type');
-                                        $type = $types && !is_wp_error($types) ? $types[0] : null;
-                                        $typeIcon = isset($getEventTypeIcon) ? $getEventTypeIcon($post) : null;
-                                    @endphp
-                                    @if($type)
+                                    @if(!empty($post->municipalEventData->type))
                                         <li class="c-municipal-event-card__meta-item">
-                                            @if($typeIcon)
-                                                @icon(['icon' => $typeIcon])@endicon
+                                            @if($post->municipalEventData->typeIcon)
+                                                @icon(['icon' => $post->municipalEventData->typeIcon])@endicon
                                             @endif
-                                            <span>{{ $type->name }}</span>
+                                            <span>{{ $post->municipalEventData->type->name }}</span>
                                         </li>
                                     @endif
                                 </ul>
