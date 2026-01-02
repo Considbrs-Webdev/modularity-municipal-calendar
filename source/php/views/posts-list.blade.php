@@ -31,6 +31,9 @@
                             'classList' => ['u-height--100', 'c-municipal-event-card'],
                             'context' => ['archive', 'archive.list', 'archive.list.card'],
                             'containerAware' => true,
+                            'attributeList' => [
+                                'aria-label' => $post->municipalEventData->ariaLabel ?? ''
+                            ],
                         ])
                             @slot('content')
                                 <ul class="c-municipal-event-card__meta unlist">
@@ -66,7 +69,7 @@
                         @endcard
                     @else
                         {{-- Original behavior for other post types --}}
-                        @includeFirst(['post.' . $appearanceConfig->getDesign()->value, 'post.card'])
+                        @includeFirst(['post.' . $appearanceConfig->getDesign()->value, 'post.card'])''
                     @endif
                 @endelement
             @endforeach

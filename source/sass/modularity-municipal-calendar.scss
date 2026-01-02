@@ -3,7 +3,9 @@
 }
 
 // Municipal Event Card Styles (Archive)
-.c-municipal-event-card {
+a.c-card.c-municipal-event-card {
+    background: var(--color-secondary, #fff) !important;
+
     &__meta {
         margin: 0;
         padding: 0;

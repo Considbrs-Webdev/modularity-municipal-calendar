@@ -36,8 +36,6 @@ class App
         add_filter('acf/load_field_group', [$this, 'removeAdvancedTermSettings']);
 
         // Add view paths for custom archive templates
-        // ONLY use Municipio/viewPaths - this is what Template.php passes to makeView()
-        // The path must be LAST because makeView() prepends in a loop (which reverses order)
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
         
         // Enrich posts with municipal event data via controller
@@ -58,8 +56,11 @@ class App
      */
     public function addViewPaths(array $paths): array
     {
+        if (!is_archive() || get_post_type() !== 'municipal_event') {
+            return $paths;
+        }
+
         // Add at the END - will be prepended LAST, so checked FIRST
-        // (BladeService.makeView() prepends paths in a loop, which reverses order)
         $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'source/php/views';
         
         return $paths;
