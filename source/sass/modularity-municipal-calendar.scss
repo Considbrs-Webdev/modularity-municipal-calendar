@@ -1,10 +1,12 @@
 :root {
     --municipal-card-background: var(--color-background-card, lightgray);
+    --municipal-card-border-radius: var(--radius-sm, 8px);
 }
 
 // Municipal Event Card Styles (Archive)
 a.c-card.c-municipal-event-card {
     background: var(--municipal-card-background);
+    border-radius: var(--municipal-card-border-radius);
 
     &__meta {
         margin: 0;
