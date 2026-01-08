@@ -56,12 +56,12 @@ class App
      */
     public function addViewPaths(array $paths): array
     {
-        if (!is_archive() || get_post_type() !== 'municipal_event') {
+        if (!is_post_type_archive('municipal_event')) {
             return $paths;
         }
 
         // Add at the END - will be prepended LAST, so checked FIRST
-        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'source/php/views';
+        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         
         return $paths;
     }

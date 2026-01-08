@@ -1,10 +1,10 @@
-.mod-municipal-calendar {
-    // Add your module styles here
+:root {
+    --municipal-card-background: var(--color-background-card, lightgray);
 }
 
 // Municipal Event Card Styles (Archive)
 a.c-card.c-municipal-event-card {
-    background: var(--color-secondary, #fff) !important;
+    background: var(--municipal-card-background);
 
     &__meta {
         margin: 0;
