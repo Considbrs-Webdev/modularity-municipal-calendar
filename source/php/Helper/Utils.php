@@ -34,15 +34,5 @@ class Utils
     {
         return get_option('modularity_municipal-calendar_' . $key, $default);
     }
-
-    /**
-     * Example: Check if we're in a Modularity context
-     *
-     * @return bool
-     */
-    public static function isModularityActive(): bool
-    {
-        return function_exists('modularity_register_module');
-    }
 }
 

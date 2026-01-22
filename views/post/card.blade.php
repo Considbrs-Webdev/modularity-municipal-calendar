@@ -1,6 +1,6 @@
 @card([
     'link' => $post->getPermalink(),
-    'heading' => $post->getTitle(),
+    'heading' => $post->municipalEventData->administration->name,
     'classList' => ['u-height--100', 'c-municipal-event-card'],
     'context' => ['archive', 'archive.list', 'archive.list.card'],
     'containerAware' => true,
@@ -10,12 +10,12 @@
 ])
     @slot('content')
         <ul class="c-municipal-event-card__meta unlist">
-            {{-- Date/Time --}}
-            @if (!empty($post->municipalEventData->formattedDate))
+            {{-- Date/Time Range --}}
+            @if (!empty($post->municipalEventData->timeRange))
                 <li class="c-municipal-event-card__meta-item">
                     @icon(['icon' => 'fa-solid fa-calendar-days'])
                     @endicon
-                    <span>{{ $post->municipalEventData->formattedDate }}</span>
+                    <span>{{ $post->municipalEventData->timeRange }}</span>
                 </li>
             @endif
 

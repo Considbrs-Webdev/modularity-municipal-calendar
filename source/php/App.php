@@ -3,9 +3,8 @@
 namespace ModularityMunicipalCalendar;
 
 use ModularityMunicipalCalendar\Helper\CacheBust;
-use ModularityMunicipalCalendar\Controller\PostsListController;
+use ModularityMunicipalCalendar\PostDecorators\ApplyMunicipalEventData;
 use ModularityMunicipalCalendar\PostType\MunicipalEvent;
-use ModularityMunicipalCalendar\Module\MunicipalCalendar;
 use ModularityMunicipalCalendar\Admin\Settings;
 
 /**
@@ -26,9 +25,6 @@ class App
         // Initialize custom post type
         new MunicipalEvent();
 
-        // Register module with Modularity
-        add_action('init', [$this, 'registerModule']);
-
         // Enqueue styles
         add_action('wp_enqueue_scripts', [$this, 'enqueueStyles']);
 
@@ -37,12 +33,32 @@ class App
 
         // Add view paths for custom archive templates
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
-        
-        // Enrich posts with municipal event data via controller
-        add_filter('Municipio/Template/municipal_event/archive/viewData', function($data, $template = null) {
-            $controller = new PostsListController();
-            return $controller->enrichMunicipalEventPosts($data, $template);
-        }, 10, 2);
+
+        add_filter('Municipio/DecoratePostObject', function ($postObject) {
+            if (!method_exists($postObject, 'getPostType') || $postObject->getPostType() !== 'municipal_event') {
+                return $postObject;
+            }
+
+            // Get the underlying WP_Post ID
+            $postId = $postObject->getId();
+            $wpPost = get_post($postId);
+
+            if (!$wpPost || $wpPost->post_type !== 'municipal_event') {
+                return $postObject;
+            }
+
+            // Apply decorator to WP_Post
+            $decorator = new ApplyMunicipalEventData();
+            $decoratedPost = $decorator->apply($wpPost);
+
+            // Copy municipalEventData to PostObjectInterface
+            // PostObjectInterface supports dynamic properties via __get/__set
+            if (isset($decoratedPost->municipalEventData)) {
+                $postObject->municipalEventData = $decoratedPost->municipalEventData;
+            }
+
+            return $postObject;
+        }, 10, 1);
     }
 
     /**
@@ -56,13 +72,12 @@ class App
      */
     public function addViewPaths(array $paths): array
     {
-        if (!is_post_type_archive('municipal_event')) {
-            return $paths;
+        // Add paths for both archive and single municipal_event pages
+        if (is_post_type_archive('municipal_event') || is_singular('municipal_event')) {
+            // Add at the END - will be prepended LAST, so checked FIRST
+            $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
 
-        // Add at the END - will be prepended LAST, so checked FIRST
-        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
-        
         return $paths;
     }
 
@@ -81,21 +96,6 @@ class App
                 MODULARITYMUNICIPALCALENDAR_URL . '/assets/dist/' . $styleFile,
                 [],
                 null
-            );
-        }
-    }
-
-    /**
-     * Register the module with Modularity
-     * 
-     * @return void
-     */
-    public function registerModule(): void
-    {
-        if (function_exists('modularity_register_module')) {
-            modularity_register_module(
-                MODULARITYMUNICIPALCALENDAR_MODULE_PATH,
-                'MunicipalCalendar',
             );
         }
     }
