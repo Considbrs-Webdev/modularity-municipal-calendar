@@ -50,14 +50,14 @@ register_activation_hook(__FILE__, function () {
     if (file_exists(MODULARITYMUNICIPALCALENDAR_PATH . 'vendor/autoload.php')) {
         require_once MODULARITYMUNICIPALCALENDAR_PATH . 'vendor/autoload.php';
     }
-    
+
     // Register post type and taxonomies
     if (class_exists('ModularityMunicipalCalendar\PostType\MunicipalEvent')) {
         $postType = new ModularityMunicipalCalendar\PostType\MunicipalEvent();
         $postType->registerPostType();
         $postType->registerTaxonomies();
     }
-    
+
     flush_rewrite_rules();
 });
 
@@ -67,5 +67,6 @@ register_deactivation_hook(__FILE__, function () {
 });
 
 // Start application
-new ModularityMunicipalCalendar\App();
-
+if (class_exists('ModularityMunicipalCalendar\App')) {
+    new ModularityMunicipalCalendar\App();
+}

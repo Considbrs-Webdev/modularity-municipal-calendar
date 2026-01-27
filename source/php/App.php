@@ -33,7 +33,7 @@ class App
 
         // Add view paths for custom archive templates
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
-
+        
         add_filter('Municipio/DecoratePostObject', function ($postObject) {
             if (!method_exists($postObject, 'getPostType') || $postObject->getPostType() !== 'municipal_event') {
                 return $postObject;
@@ -74,10 +74,10 @@ class App
     {
         // Add paths for both archive and single municipal_event pages
         if (is_post_type_archive('municipal_event') || is_singular('municipal_event')) {
-            // Add at the END - will be prepended LAST, so checked FIRST
-            $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
+        // Add at the END - will be prepended LAST, so checked FIRST
+        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
-
+        
         return $paths;
     }
 

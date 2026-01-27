@@ -35,4 +35,3 @@ class Utils
         return get_option('modularity_municipal-calendar_' . $key, $default);
     }
 }
-
