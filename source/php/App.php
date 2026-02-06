@@ -9,10 +9,10 @@ use ModularityMunicipalCalendar\Admin\Settings;
 
 /**
  * Class App
- * 
+ *
  * Main application bootstrap class.
  * Initialize your plugin components here.
- * 
+ *
  * @package ModularityMunicipalCalendar
  */
 class App
@@ -31,9 +31,12 @@ class App
         // Remove advanced term settings for our taxonomies
         add_filter('acf/load_field_group', [$this, 'removeAdvancedTermSettings']);
 
-        // Add view paths for custom archive templates
+        // Add view paths for custom templates (single/archive pages)
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
-        
+
+        // Override Posts module view path to include our custom card template
+        add_filter('/Modularity/externalViewPath', [$this, 'addPostsModuleViewPath']);
+
         add_filter('Municipio/DecoratePostObject', function ($postObject) {
             if (!method_exists($postObject, 'getPostType') || $postObject->getPostType() !== 'municipal_event') {
                 return $postObject;
@@ -63,10 +66,10 @@ class App
 
     /**
      * Add plugin view paths to Municipio for custom templates
-     * 
+     *
      * NOTE: BladeService.makeView() prepends paths in a loop, which REVERSES the order!
      * So to be checked FIRST, our path must be LAST in the array.
-     * 
+     *
      * @param array $paths The existing view paths
      * @return array The modified view paths
      */
@@ -74,16 +77,44 @@ class App
     {
         // Add paths for both archive and single municipal_event pages
         if (is_post_type_archive('municipal_event') || is_singular('municipal_event')) {
-        // Add at the END - will be prepended LAST, so checked FIRST
-        $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
+            // Add at the END - will be prepended LAST, so checked FIRST
+            $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
-        
+
         return $paths;
     }
 
     /**
+     * Add our view path to the Posts module view paths
+     *
+     * @param array $externalViewPaths Module post_type => view path mapping
+     * @return array Modified mapping
+     */
+    public function addPostsModuleViewPath(array $externalViewPaths): array
+    {
+        if (!is_post_type_archive('municipal_event') && !is_singular('municipal_event')) {
+            return $externalViewPaths;
+        }
+
+        if (!defined('MODULARITY_PATH')) {
+            return $externalViewPaths;
+        }
+
+        // Get the original Posts module view path
+        $postsModuleViewPath = MODULARITY_PATH . 'source/php/Module/Posts/views';
+
+        // Return array with our path last (will be prepended last = checked first)
+        $externalViewPaths['mod-posts'] = [
+            $postsModuleViewPath,
+            MODULARITYMUNICIPALCALENDAR_PATH . 'views',
+        ];
+
+        return $externalViewPaths;
+    }
+
+    /**
      * Enqueue styles
-     * 
+     *
      * @return void
      */
     public function enqueueStyles(): void
@@ -102,7 +133,7 @@ class App
 
     /**
      * Remove Municipio's advanced term settings for our taxonomies
-     * 
+     *
      * @param array $field_group The ACF field group
      * @return array|false The field group or false to remove it
      */
