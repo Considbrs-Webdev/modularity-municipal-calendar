@@ -39,6 +39,7 @@ class ApplyMunicipalEventData implements PostDecorator
         $acfService = AcfService::get();
         $postId = $post->ID;
 
+
         // Get start date and duration using ACF service
         $startDate = $acfService->getField('start_date', $postId);
         $duration = $acfService->getField('duration', $postId);
@@ -99,7 +100,6 @@ class ApplyMunicipalEventData implements PostDecorator
             'administrationIcon' => $administrationIcon,
             'ariaLabel' => $ariaLabel,
         ];
-
         return $post;
     }
 }

@@ -34,6 +34,9 @@ class App
         // Add view paths for custom templates (single/archive pages)
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
 
+        // Add our view path to Component Library Blade (used by PostsList async pagination and block render)
+        add_filter('ComponentLibrary/ViewPaths', [$this, 'addComponentLibraryViewPaths'], 10, 1);
+
         // Override Posts module view path to include our custom card template
         add_filter('/Modularity/externalViewPath', [$this, 'addPostsModuleViewPath']);
 
@@ -67,20 +70,29 @@ class App
     /**
      * Add plugin view paths to Municipio for custom templates
      *
-     * NOTE: BladeService.makeView() prepends paths in a loop, which REVERSES the order!
-     * So to be checked FIRST, our path must be LAST in the array.
-     *
      * @param array $paths The existing view paths
      * @return array The modified view paths
      */
     public function addViewPaths(array $paths): array
     {
-        // Add paths for both archive and single municipal_event pages
         if (is_post_type_archive('municipal_event') || is_singular('municipal_event')) {
-            // Add at the END - will be prepended LAST, so checked FIRST
             $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
+        return $paths;
+    }
 
+    /**
+     * Add plugin view path to Component Library Blade view paths.
+     * @param array $paths Paths from BladeServiceFactory (internal + external, e.g. PostsList)
+     * @return array Modified paths
+     */
+    public function addComponentLibraryViewPaths(array $paths): array
+    {
+
+        $ourPath = rtrim(MODULARITYMUNICIPALCALENDAR_PATH . 'views', DIRECTORY_SEPARATOR);
+        if (is_dir($ourPath)) {
+            array_unshift($paths, $ourPath . DIRECTORY_SEPARATOR);
+        }
         return $paths;
     }
 
