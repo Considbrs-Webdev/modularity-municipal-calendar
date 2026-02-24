@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name:       Modularity Municipal Calendar
- * Plugin URI:        https://github.com/helsingborg-stad/modularity-municipal-calendar
+ * Plugin URI:        https://github.com/considbrs-webdev/modularity-municipal-calendar
  * Description:       A municipal calendar plugin for managing municipal events.
  * Version: 1.0.0
- * Author:            Starter
- * Author URI:        https://github.com/helsingborg-stad
+ * Author:            Consid Borås
+ * Author URI:        https://github.com/considbrs-webdev
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       modularity-municipal-calendar
@@ -21,8 +21,8 @@ if (! defined('WPINC')) {
 define('MODULARITYMUNICIPALCALENDAR_PATH', plugin_dir_path(__FILE__));
 define('MODULARITYMUNICIPALCALENDAR_URL', plugins_url('', __FILE__));
 
-// Load text domain
-add_action('init', function () {
+// Load text domain early (before acf/init) so ACF field labels translate
+add_action('plugins_loaded', function () {
     load_plugin_textdomain('modularity-municipal-calendar', false, plugin_basename(dirname(__FILE__)) . '/languages');
 });
 
