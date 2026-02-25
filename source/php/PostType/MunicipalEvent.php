@@ -13,8 +13,20 @@ class MunicipalEvent
 {
     public function __construct()
     {
-        add_action('init', [$this, 'registerPostType']);
-        add_action('init', [$this, 'registerTaxonomies']);
+        // Use acf/init so ACF options (display_name, slug) are available when registering.
+        // Priority 20 ensures AcfExportManager has imported field groups (runs at 10).
+        if (function_exists('acf_add_local_field_group')) {
+            if (did_action('acf/init')) {
+                $this->registerPostType();
+                $this->registerTaxonomies();
+            } else {
+                add_action('acf/init', [$this, 'registerPostType'], 20);
+                add_action('acf/init', [$this, 'registerTaxonomies'], 21);
+            }
+        } else {
+            add_action('init', [$this, 'registerPostType'], 20);
+            add_action('init', [$this, 'registerTaxonomies'], 21);
+        }
     }
 
     /**

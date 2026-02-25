@@ -40,6 +40,9 @@ class App
         // Override Posts module view path to include our custom card template
         add_filter('/Modularity/externalViewPath', [$this, 'addPostsModuleViewPath']);
 
+        // Typesense search integration
+        new TypesenseSearchIntegration();
+
         add_filter('Municipio/DecoratePostObject', function ($postObject) {
             if (!method_exists($postObject, 'getPostType') || $postObject->getPostType() !== 'municipal_event') {
                 return $postObject;
@@ -75,7 +78,7 @@ class App
      */
     public function addViewPaths(array $paths): array
     {
-        if (is_post_type_archive('municipal_event') || is_singular('municipal_event')) {
+        if (is_post_type_archive('municipal_event') || is_singular('municipal_event') || is_search()) {
             $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
         return $paths;
@@ -104,7 +107,7 @@ class App
      */
     public function addPostsModuleViewPath(array $externalViewPaths): array
     {
-        if (!is_post_type_archive('municipal_event') && !is_singular('municipal_event')) {
+        if (!is_post_type_archive('municipal_event') && !is_singular('municipal_event') && !is_search()) {
             return $externalViewPaths;
         }
 
