@@ -152,10 +152,10 @@ class TypesenseSearchIntegration
         $document['administration_name'] = $adminName !== '' ? $adminName : (string) $post->post_title;
         $document['time_range'] = $timeRange;
         $document['place_name'] = $place && isset($place->name) ? (string) $place->name : '';
-        $document['place_icon'] = $this->faToWaIconName($this->normalizeIcon($placeIcon));
+        $document['place_icon'] = $this->normalizeIcon($placeIcon);
         // Use event_type_name so we don't overwrite type_name (post type label used by content type facet).
         $document['event_type_name'] = $type && isset($type->name) ? (string) $type->name : '';
-        $document['type_icon'] = $this->faToWaIconName($this->normalizeIcon($typeIcon));
+        $document['type_icon'] = $this->normalizeIcon($typeIcon);
 
         return $document;
     }
@@ -175,30 +175,4 @@ class TypesenseSearchIntegration
         return 'fa-solid fa-map-marker-alt';
     }
 
-    /**
-     * Map Font Awesome icon names to wa-icon naming.
-     */
-    private function faToWaIconName(string $faIcon): string
-    {
-        $map = [
-            'fa-solid fa-calendar-days' => 'calendar',
-            'fa-regular fa-calendar-days' => 'calendar',
-            'fa-solid fa-map-marker-alt' => 'location',
-            'fa-solid fa-location-dot' => 'location',
-            'fa-solid fa-calendar-check' => 'event',
-            'fa-solid fa-building' => 'building',
-            'fa-solid fa-circle-exclamation' => 'exclamation',
-            'fa-solid fa-circle-info' => 'info',
-        ];
-        $normalized = preg_replace('/\s+/', ' ', trim($faIcon));
-        if (isset($map[$normalized])) {
-            return $map[$normalized];
-        }
-        $parts = explode(' ', $normalized);
-        $last = end($parts);
-        if ($last !== '' && strpos($last, 'fa-') !== 0) {
-            return $last;
-        }
-        return 'event';
-    }
 }
