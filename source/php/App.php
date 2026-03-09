@@ -35,7 +35,7 @@ class App
         add_filter('Municipio/viewPaths', [$this, 'addViewPaths'], 999);
 
         // Add our view path to Component Library Blade (used by PostsList async pagination and block render)
-        add_filter('ComponentLibrary/ViewPaths', [$this, 'addComponentLibraryViewPaths'], 10, 1);
+        add_filter('ComponentLibrary/ViewPaths', [$this, 'addComponentLibraryViewPaths'], 9999, 1);
 
         // Override Posts module view path to include our custom card template
         add_filter('/Modularity/externalViewPath', [$this, 'addPostsModuleViewPath']);
@@ -78,19 +78,60 @@ class App
      */
     public function addViewPaths(array $paths): array
     {
-        if (is_post_type_archive('municipal_event') || is_singular('municipal_event') || is_search()) {
+        if ($this->isMunicipalEventContext()) {
             $paths[] = MODULARITYMUNICIPALCALENDAR_PATH . 'views';
         }
         return $paths;
     }
 
     /**
+     * Determine whether the current request should use plugin templates.
+     * 
+     * Safe to call even before WordPress query is initialized.
+     *
+     * @return bool
+     */
+    private function isMunicipalEventContext(): bool
+    {
+        // Check if query is ready - if so, use get_query_var()
+        if (did_action('wp') || !empty($GLOBALS['wp_query'])) {
+            $queriedPostType = get_query_var('post_type');
+            if ($queriedPostType === 'municipal_event') {
+                return true;
+            }
+            if (is_post_type_archive('municipal_event') || is_singular('municipal_event') || is_search()) {
+                return true;
+            }
+        }
+
+        // Check REST API / AJAX context via request parameters
+        // PostsList AJAX passes postType in the query parameters (set by exposePostTypeFromRestAttributes)
+        if (!empty($_GET['postType']) && $_GET['postType'] === 'municipal_event') {
+            return true;
+        }
+        if (!empty($_POST['postType']) && $_POST['postType'] === 'municipal_event') {
+            return true;
+        }
+        // For archive pages on initial load: check URL path
+        if (!empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'municipal_event') !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Add plugin view path to Component Library Blade view paths.
+     * Only in municipal_event context so we don't override simpleview (or other) post cards.
+     *
      * @param array $paths Paths from BladeServiceFactory (internal + external, e.g. PostsList)
      * @return array Modified paths
      */
     public function addComponentLibraryViewPaths(array $paths): array
     {
+        if (!$this->isMunicipalEventContext()) {
+            return $paths;
+        }
 
         $ourPath = rtrim(MODULARITYMUNICIPALCALENDAR_PATH . 'views', DIRECTORY_SEPARATOR);
         if (is_dir($ourPath)) {
@@ -107,7 +148,7 @@ class App
      */
     public function addPostsModuleViewPath(array $externalViewPaths): array
     {
-        if (!is_post_type_archive('municipal_event') && !is_singular('municipal_event') && !is_search()) {
+        if (!$this->isMunicipalEventContext()) {
             return $externalViewPaths;
         }
 
