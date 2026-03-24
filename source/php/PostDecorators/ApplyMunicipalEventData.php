@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace ModularityMunicipalCalendar\PostDecorators;
 
-use Municipio\PostDecorators\PostDecorator;
-use Municipio\PostDecorators\NullDecorator;
 use Municipio\Helper\AcfService;
 use Municipio\Helper\WpService;
 use ModularityMunicipalCalendar\Helper\TaxonomyIcons;
@@ -14,22 +12,10 @@ use WP_Post;
 /**
  * Decorator to enrich municipal_event posts with event data
  */
-class ApplyMunicipalEventData implements PostDecorator
+class ApplyMunicipalEventData
 {
-    public function __construct(
-        private ?PostDecorator $inner = null
-    ) {
-        if ($inner === null) {
-            $inner = new NullDecorator();
-        }
-        $this->inner = $inner;
-    }
-
     public function apply(WP_Post $post): WP_Post
     {
-        // Apply inner decorator first
-        $post = $this->inner->apply($post);
-
         // Only process municipal_event post type
         if ($post->post_type !== 'municipal_event') {
             return $post;
