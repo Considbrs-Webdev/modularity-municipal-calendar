@@ -2,6 +2,7 @@
 
 @section('loop')
     @if (!empty($post))
+        {!! $hook->innerLoopStart !!}
         @element([
             'componentElement' => 'article',
             'id' => 'article',
@@ -48,5 +49,6 @@
                     array_merge((array) ($signature ?? []), ['classList' => []]))
             @endsection
         @endelement
+        {!! $hook->innerLoopEnd !!}
     @endif
 @stop
