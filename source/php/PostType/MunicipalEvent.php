@@ -163,28 +163,92 @@ class MunicipalEvent
             'name'                       => $plural_label,
             'singular_name'              => $singular_label,
             'menu_name'                  => $plural_label,
-            'all_items'                  => sprintf(__('All %s', 'modularity-municipal-calendar'), $plural_label),
-            'parent_item'                => sprintf(__('Parent %s', 'modularity-municipal-calendar'), $singular_label),
-            'parent_item_colon'          => sprintf(__('Parent %s:', 'modularity-municipal-calendar'), $singular_label),
-            'new_item_name'              => sprintf(__('New %s Name', 'modularity-municipal-calendar'), $singular_label),
-            'add_new_item'               => sprintf(__('Add New %s', 'modularity-municipal-calendar'), $singular_label),
-            'edit_item'                  => sprintf(__('Edit %s', 'modularity-municipal-calendar'), $singular_label),
-            'update_item'                => sprintf(__('Update %s', 'modularity-municipal-calendar'), $singular_label),
-            'view_item'                  => sprintf(__('View %s', 'modularity-municipal-calendar'), $singular_label),
-            'separate_items_with_commas' => sprintf(__('Separate %s with commas', 'modularity-municipal-calendar'), strtolower($plural_label)),
-            'add_or_remove_items'        => sprintf(__('Add or remove %s', 'modularity-municipal-calendar'), strtolower($plural_label)),
-            'choose_from_most_used'      => sprintf(__('Choose from the most used', 'modularity-municipal-calendar')),
-            'popular_items'              => sprintf(__('Popular %s', 'modularity-municipal-calendar'), $plural_label),
-            'search_items'               => sprintf(__('Search %s', 'modularity-municipal-calendar'), $plural_label),
+            'all_items'                  => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('All %s', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
+            'parent_item'                => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('Parent %s', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'parent_item_colon'          => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('Parent %s:', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'new_item_name'              => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('New %s Name', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'add_new_item'               => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('Add New %s', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'edit_item'                  => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('Edit %s', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'update_item'                => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('Update %s', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'view_item'                  => sprintf(
+                /* translators: %s: Taxonomy label (singular). */
+                __('View %s', 'modularity-municipal-calendar'),
+                $singular_label
+            ),
+            'separate_items_with_commas' => sprintf(
+                /* translators: %s: Taxonomy label (plural, lowercase). */
+                __('Separate %s with commas', 'modularity-municipal-calendar'),
+                strtolower($plural_label)
+            ),
+            'add_or_remove_items'        => sprintf(
+                /* translators: %s: Taxonomy label (plural, lowercase). */
+                __('Add or remove %s', 'modularity-municipal-calendar'),
+                strtolower($plural_label)
+            ),
+            'choose_from_most_used'      => __('Choose from the most used', 'modularity-municipal-calendar'),
+            'popular_items'              => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('Popular %s', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
+            'search_items'               => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('Search %s', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
             'not_found'                  => __('Not Found', 'modularity-municipal-calendar'),
-            'no_terms'                   => sprintf(__('No %s', 'modularity-municipal-calendar'), strtolower($plural_label)),
-            'items_list'                 => sprintf(__('%s list', 'modularity-municipal-calendar'), $plural_label),
-            'items_list_navigation'      => sprintf(__('%s list navigation', 'modularity-municipal-calendar'), $plural_label),
+            'no_terms'                   => sprintf(
+                /* translators: %s: Taxonomy label (plural, lowercase). */
+                __('No %s', 'modularity-municipal-calendar'),
+                strtolower($plural_label)
+            ),
+            'items_list'                 => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('%s list', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
+            'items_list_navigation'      => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('%s list navigation', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
         ];
 
         $args = [
             'labels'            => $labels,
-            'description'       => sprintf(__('%s for municipal events', 'modularity-municipal-calendar'), $plural_label),
+            'description'       => sprintf(
+                /* translators: %s: Taxonomy label (plural). */
+                __('%s for municipal events', 'modularity-municipal-calendar'),
+                $plural_label
+            ),
             'hierarchical'      => true,
             'public'            => true,
             'show_ui'           => true,

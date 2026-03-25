@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-24T14:31:55+01:00\n"
+"POT-Creation-Date: 2026-03-25T16:46:55+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: modularity-municipal-calendar\n"
@@ -92,222 +92,238 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:31
-#: source/php/PostType/MunicipalEvent.php:41
+#: source/php/PostType/MunicipalEvent.php:43
+#: source/php/PostType/MunicipalEvent.php:53
 msgid "Municipal Events"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:32
-#: source/php/PostType/MunicipalEvent.php:42
+#: source/php/PostType/MunicipalEvent.php:44
+#: source/php/PostType/MunicipalEvent.php:54
 msgid "Municipal Event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:43
+#: source/php/PostType/MunicipalEvent.php:55
 msgid "Add New"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:44
+#: source/php/PostType/MunicipalEvent.php:56
 msgid "Add New Municipal Event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:45
+#: source/php/PostType/MunicipalEvent.php:57
 msgid "New Municipal Event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:46
+#: source/php/PostType/MunicipalEvent.php:58
 msgid "Edit Municipal Event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:47
+#: source/php/PostType/MunicipalEvent.php:59
 msgid "View Municipal Event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:48
+#: source/php/PostType/MunicipalEvent.php:60
 msgid "All Municipal Events"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:49
+#: source/php/PostType/MunicipalEvent.php:61
 msgid "Search Municipal Events"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:50
+#: source/php/PostType/MunicipalEvent.php:62
 msgid "Parent Municipal Event:"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:51
+#: source/php/PostType/MunicipalEvent.php:63
 msgid "No municipal events found."
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:52
+#: source/php/PostType/MunicipalEvent.php:64
 msgid "No municipal events found in Trash."
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:53
+#: source/php/PostType/MunicipalEvent.php:65
 msgid "Featured Image"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:54
+#: source/php/PostType/MunicipalEvent.php:66
 msgid "Set featured image"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:55
+#: source/php/PostType/MunicipalEvent.php:67
 msgid "Remove featured image"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:56
+#: source/php/PostType/MunicipalEvent.php:68
 msgid "Use as featured image"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:57
+#: source/php/PostType/MunicipalEvent.php:69
 msgid "Insert into municipal event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:58
+#: source/php/PostType/MunicipalEvent.php:70
 msgid "Uploaded to this municipal event"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:59
+#: source/php/PostType/MunicipalEvent.php:71
 msgid "Filter municipal events list"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:60
+#: source/php/PostType/MunicipalEvent.php:72
 msgid "Municipal events list navigation"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:61
+#: source/php/PostType/MunicipalEvent.php:73
 msgid "Municipal events list"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:66
+#: source/php/PostType/MunicipalEvent.php:78
 msgid "Municipal calendar events"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:99
-#: source/php/PostType/MunicipalEvent.php:101
+#: source/php/PostType/MunicipalEvent.php:111
+#: source/php/PostType/MunicipalEvent.php:113
 msgid "Place"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:100
-#: source/php/PostType/MunicipalEvent.php:102
+#: source/php/PostType/MunicipalEvent.php:112
+#: source/php/PostType/MunicipalEvent.php:114
 msgid "Places"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:110
+#: source/php/PostType/MunicipalEvent.php:122
 msgid "Administration"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:111
+#: source/php/PostType/MunicipalEvent.php:123
 msgid "Administrations"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:112
+#: source/php/PostType/MunicipalEvent.php:124
 msgid "Förvaltning"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:113
+#: source/php/PostType/MunicipalEvent.php:125
 msgid "Förvaltningar"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:121
+#: source/php/PostType/MunicipalEvent.php:133
 msgid "Type"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:122
+#: source/php/PostType/MunicipalEvent.php:134
 msgid "Types"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:123
+#: source/php/PostType/MunicipalEvent.php:135
 msgid "Typ"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:124
+#: source/php/PostType/MunicipalEvent.php:136
 msgid "Typer"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:154
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:168
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:155
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:173
 #, php-format
 msgid "Parent %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:156
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:178
 #, php-format
 msgid "Parent %s:"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:157
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:183
 #, php-format
 msgid "New %s Name"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:158
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:188
 #, php-format
 msgid "Add New %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:159
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:193
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:160
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:198
 #, php-format
 msgid "Update %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:161
+#. translators: %s: Taxonomy label (singular).
+#: source/php/PostType/MunicipalEvent.php:203
 #, php-format
 msgid "View %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:162
+#. translators: %s: Taxonomy label (plural, lowercase).
+#: source/php/PostType/MunicipalEvent.php:208
 #, php-format
 msgid "Separate %s with commas"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:163
+#. translators: %s: Taxonomy label (plural, lowercase).
+#: source/php/PostType/MunicipalEvent.php:213
 #, php-format
 msgid "Add or remove %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:164
+#: source/php/PostType/MunicipalEvent.php:216
 msgid "Choose from the most used"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:165
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:219
 #, php-format
 msgid "Popular %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:166
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:224
 #, php-format
 msgid "Search %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:167
+#: source/php/PostType/MunicipalEvent.php:227
 msgid "Not Found"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:168
+#. translators: %s: Taxonomy label (plural, lowercase).
+#: source/php/PostType/MunicipalEvent.php:230
 #, php-format
 msgid "No %s"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:169
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:235
 #, php-format
 msgid "%s list"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:170
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:240
 #, php-format
 msgid "%s list navigation"
 msgstr ""
 
-#: source/php/PostType/MunicipalEvent.php:175
+#. translators: %s: Taxonomy label (plural).
+#: source/php/PostType/MunicipalEvent.php:249
 #, php-format
 msgid "%s for municipal events"
 msgstr ""
