@@ -4,8 +4,10 @@ namespace ModularityMunicipalCalendar;
 
 use ModularityMunicipalCalendar\Helper\CacheBust;
 use ModularityMunicipalCalendar\PostDecorators\ApplyMunicipalEventData;
+use ModularityMunicipalCalendar\PostStatus\ArchivedPostStatus;
 use ModularityMunicipalCalendar\PostType\MunicipalEvent;
 use ModularityMunicipalCalendar\Admin\Settings;
+use WP_Query;
 
 /**
  * Class App
@@ -24,6 +26,13 @@ class App
 
         // Initialize custom post type
         new MunicipalEvent();
+
+        // After other plugins that may register the same slug (e.g. Simpleview) so permalink/single stays viewable.
+        add_action('init', [$this, 'registerArchivedPostStatus'], 25);
+
+        // Front-end archive should only list published municipal events.
+        add_action('pre_get_posts', [$this, 'limitFrontEndArchiveToPublished'], 10, 1);
+        add_filter('quick_edit_statuses', [$this, 'addQuickEditArchivedStatus'], 10, 4);
 
         // Enqueue styles
         add_action('wp_enqueue_scripts', [$this, 'enqueueStyles']);
@@ -68,6 +77,74 @@ class App
 
             return $postObject;
         }, 10, 1);
+    }
+
+    /**
+     * Register custom post status for ended events.
+     */
+    public function registerArchivedPostStatus(): void
+    {
+        (new ArchivedPostStatus())->register();
+    }
+
+    /**
+     * Limit front-end municipal_event archives to published posts only.
+     *
+     * Archived posts can still be reached via direct permalink.
+     */
+    public function limitFrontEndArchiveToPublished(WP_Query $query): void
+    {
+        if (is_admin()) {
+            return;
+        }
+
+        if ($query->is_singular()) {
+            return;
+        }
+
+        if (defined('REST_REQUEST') && REST_REQUEST) {
+            return;
+        }
+
+        if (defined('WP_CLI') && constant('WP_CLI')) {
+            return;
+        }
+
+        if (defined('DOING_CRON') && DOING_CRON) {
+            return;
+        }
+
+        if (!$query->is_post_type_archive('municipal_event')) {
+            return;
+        }
+
+        $status = $query->get('post_status');
+        if ($status === 'archived' || $status === 'any') {
+            return;
+        }
+
+        if (empty($status) || $status === 'publish') {
+            $query->set('post_status', 'publish');
+        }
+    }
+
+    /**
+     * Add "Archived" to Quick Edit/Bulk Edit status dropdown for municipal_event.
+     *
+     * @param array<string, string> $statuses
+     * @param string $postType
+     * @param bool $bulk
+     * @param bool $canPublish
+     * @return array<string, string>
+     */
+    public function addQuickEditArchivedStatus(array $statuses, string $postType, bool $bulk, bool $canPublish): array
+    {
+        if ($postType !== 'municipal_event' || !$canPublish) {
+            return $statuses;
+        }
+
+        $statuses['archived'] = __('Archived', 'modularity-municipal-calendar');
+        return $statuses;
     }
 
     /**

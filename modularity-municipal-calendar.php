@@ -70,3 +70,8 @@ register_deactivation_hook(__FILE__, function () {
 if (class_exists('ModularityMunicipalCalendar\App')) {
     new ModularityMunicipalCalendar\App();
 }
+
+// Register WP-CLI commands
+if (defined('WP_CLI') && constant('WP_CLI')) {
+    \WP_CLI::add_command('municipal-event', 'ModularityMunicipalCalendar\Cli\MunicipalEventCommand');
+}

@@ -11,6 +11,10 @@
   background: var(--municipal-card-background);
   border-radius: var(--municipal-card-border-radius);
 
+  &:hover {
+    background: var(--municipal-card-background);
+  }
+
   .c-municipal-event-card__meta {
     margin: 0;
     padding: 0;
