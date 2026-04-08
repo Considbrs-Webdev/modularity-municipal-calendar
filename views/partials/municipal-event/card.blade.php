@@ -1,6 +1,8 @@
 @card([
     'link' => $post->getPermalink(),
-    'heading' => $post->municipalEventData->administration->name,
+    'heading' => isset($post->municipalEventData->administration->name)
+        ? $post->municipalEventData->administration->name
+        : $post->municipalEventData->title,
     'classList' => ['u-height--100', 'c-municipal-event-card'],
     'context' => ['archive', 'archive.list', 'archive.list.card'],
     'containerAware' => true,

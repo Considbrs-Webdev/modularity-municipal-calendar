@@ -44,7 +44,11 @@ class ApplyMunicipalEventData
                 // Format as range: "25 feb 2026, 08:30 - 17:00"
                 $startFormatted = $wpService->dateI18n('j M Y, H:i', $startTimestamp);
                 $endFormatted = $wpService->dateI18n('H:i', $endTimestamp);
-                $timeRange = $startFormatted . ' - ' . $endFormatted;
+                if ($startTimestamp == $endTimestamp) {
+                    $timeRange = $startFormatted;
+                } else {
+                    $timeRange = $startFormatted . ' - ' . $endFormatted;
+                }
             }
         }
 
@@ -85,6 +89,7 @@ class ApplyMunicipalEventData
             'administration' => $administration,
             'administrationIcon' => $administrationIcon,
             'ariaLabel' => $ariaLabel,
+            'title' => $post->post_title,
         ];
         return $post;
     }
