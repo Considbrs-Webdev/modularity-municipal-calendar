@@ -18,11 +18,11 @@
                     <h2 class="c-typography c-card__heading u-margin__y--0 c-typography__variant--h3">
                         <a class="ts-search-hit-card__link" href="{SEARCH_HIT_LINK}">{SEARCH_HIT_ADMINISTRATION}</a>
                     </h2>
-                    <span class="c-typography c-typography__variant--meta u-margin__y--0">
+                    <span class="c-typography c-typography__variant--meta u-margin__y--0" data-js-hide-if-empty>
                         <i class="{SEARCH_HIT_PLACE_ICON}" aria-hidden="true"></i>
                         {SEARCH_HIT_PLACE}
                     </span>
-                    <span class="c-typography c-typography__variant--meta u-margin__y--0">
+                    <span class="c-typography c-typography__variant--meta u-margin__y--0" data-js-hide-if-empty>
                         <i class="{SEARCH_HIT_TYPE_ICON}" aria-hidden="true"></i>
                         {SEARCH_HIT_TYPE}
                     </span>

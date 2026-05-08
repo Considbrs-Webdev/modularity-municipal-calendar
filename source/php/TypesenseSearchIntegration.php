@@ -162,6 +162,10 @@ class TypesenseSearchIntegration
 
     /**
      * Normalize ACF icon field (string or array) to icon name string.
+     *
+     * Returns an empty string when $icon is null/false (no term assigned),
+     * so placeholder-mapped fields produce no output and the wrapper element
+     * is hidden by the data-js-hide-if-empty mechanism in the hit template.
      */
     private function normalizeIcon(mixed $icon): string
     {
@@ -172,7 +176,7 @@ class TypesenseSearchIntegration
             $name = $icon['icon_material_icon'] ?? $icon['icon'] ?? null;
             return is_string($name) ? $name : 'fa-solid fa-map-marker-alt';
         }
-        return 'fa-solid fa-map-marker-alt';
+        return '';
     }
 
 }
