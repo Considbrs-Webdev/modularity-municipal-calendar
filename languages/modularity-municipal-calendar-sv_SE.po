@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-24T14:31:55+01:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2026-05-27T12:09:19+02:00\n"
+"PO-Revision-Date: 2026-05-27 12:00+0200\n"
 "Language: sv_SE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: modularity-municipal-calendar\n"
@@ -192,20 +192,20 @@ msgid "Places"
 msgstr "Platser"
 
 #: source/php/PostType/MunicipalEvent.php:122
-msgid "Administration"
-msgstr "Förvaltning"
+msgid "Instance"
+msgstr "Instans"
 
 #: source/php/PostType/MunicipalEvent.php:123
-msgid "Administrations"
-msgstr "Förvaltningar"
+msgid "Instances"
+msgstr "Instanser"
 
 #: source/php/PostType/MunicipalEvent.php:124
 msgid "Förvaltning"
-msgstr "Förvaltning"
+msgstr "Instans"
 
 #: source/php/PostType/MunicipalEvent.php:125
 msgid "Förvaltningar"
-msgstr "Förvaltningar"
+msgstr "Instanser"
 
 #: source/php/PostType/MunicipalEvent.php:133
 msgid "Type"
@@ -326,3 +326,19 @@ msgstr "Navigering i %s-listan"
 #, php-format
 msgid "%s for municipal events"
 msgstr "%s för kommunkalender"
+
+#: source/php/App.php:146
+msgid "Archived"
+msgstr "Arkiverade"
+
+#: source/php/PostStatus/ArchivedPostStatus.php:22
+msgctxt "post status"
+msgid "Archived"
+msgstr "Arkiverad"
+
+#: source/php/PostStatus/ArchivedPostStatus.php:29
+#, php-format
+msgid "Archived <span class=\"count\">(%s)</span>"
+msgid_plural "Archived <span class=\"count\">(%s)</span>"
+msgstr[0] "Arkiverade <span class=\"count\">(%s)</span>"
+msgstr[1] "Arkiverade <span class=\"count\">(%s)</span>"

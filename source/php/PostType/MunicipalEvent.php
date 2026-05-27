@@ -8,7 +8,7 @@ namespace ModularityMunicipalCalendar\PostType;
  * Registers the Municipal Event custom post type and its taxonomies.
  * 
  * @package ModularityMunicipalCalendar\PostType
- */ 
+ */
 class MunicipalEvent
 {
     public function __construct()
@@ -37,18 +37,18 @@ class MunicipalEvent
     public function registerPostType(): void
     {
         $slug = get_field('slug', 'municipal-calendar-settings') ?: 'municipal-event';
-        
+
         // Get display name from settings (for frontend: archive title, breadcrumbs)
         $displayName = get_field('display_name', 'municipal-calendar-settings');
         $pluralName = !empty($displayName) ? $displayName : __('Municipal Events', 'modularity-municipal-calendar');
         $singularName = !empty($displayName) ? $displayName : __('Municipal Event', 'modularity-municipal-calendar');
-        
+
         $labels = [
             // Frontend labels (use custom display name)
             'name'                  => $pluralName,
             'singular_name'         => $singularName,
             'archives'              => $pluralName,
-            
+
             // Admin labels (keep fixed for plugin identity)
             'menu_name'             => __('Municipal Events', 'modularity-municipal-calendar'),
             'name_admin_bar'        => __('Municipal Event', 'modularity-municipal-calendar'),
@@ -119,8 +119,8 @@ class MunicipalEvent
         $this->registerTaxonomy(
             'event_administration',
             'event_administrations',
-            __('Administration', 'modularity-municipal-calendar'),
-            __('Administrations', 'modularity-municipal-calendar'),
+            __('Instance', 'modularity-municipal-calendar'),
+            __('Instances', 'modularity-municipal-calendar'),
             __('Förvaltning', 'modularity-municipal-calendar'),
             __('Förvaltningar', 'modularity-municipal-calendar'),
             'event-administration'
@@ -262,4 +262,3 @@ class MunicipalEvent
         register_taxonomy($taxonomy_slug, ['municipal_event'], $args);
     }
 }
-
