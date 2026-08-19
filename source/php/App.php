@@ -27,11 +27,9 @@ class App
         // Initialize custom post type
         new MunicipalEvent();
 
-        // After other plugins that may register the same slug (e.g. Simpleview) so permalink/single stays viewable.
-        add_action('init', [$this, 'registerArchivedPostStatus'], 25);
-
-        // Front-end archive should only list published municipal events.
+        add_action('init', [$this, 'registerArchivedPostStatus'], 10);
         add_action('pre_get_posts', [$this, 'limitFrontEndArchiveToPublished'], 10, 1);
+        add_action('pre_get_posts', [$this, 'allowArchivedMunicipalEventSingular'], 10, 1);
         add_filter('quick_edit_statuses', [$this, 'addQuickEditArchivedStatus'], 10, 4);
 
         // Enqueue styles
@@ -90,7 +88,7 @@ class App
     /**
      * Limit front-end municipal_event archives to published posts only.
      *
-     * Archived posts can still be reached via direct permalink.
+     * @param WP_Query $query The query.
      */
     public function limitFrontEndArchiveToPublished(WP_Query $query): void
     {
@@ -126,6 +124,77 @@ class App
         if (empty($status) || $status === 'publish') {
             $query->set('post_status', 'publish');
         }
+    }
+
+    /**
+     * Keep archived municipal event single URLs reachable for anonymous visitors.
+     *
+     * Only runs when the requested post is already `archived`. Draft, pending,
+     * private, and future previews keep WordPress default singular status handling.
+     *
+     * @param WP_Query $query The query.
+     */
+    public function allowArchivedMunicipalEventSingular(WP_Query $query): void
+    {
+        if (is_admin() || !$query->is_main_query() || !$query->is_singular()) {
+            return;
+        }
+
+        $status = $query->get('post_status');
+        if (!empty($status) && $status !== 'publish') {
+            return;
+        }
+
+        $post = $this->getRequestedMunicipalEvent($query);
+        if ($post === null || $post->post_status !== 'archived') {
+            return;
+        }
+
+        $query->set('post_status', ['publish', 'archived']);
+    }
+
+    /**
+     * Resolve the municipal event targeted by a singular query.
+     *
+     * @param WP_Query $query The query.
+     */
+    private function getRequestedMunicipalEvent(WP_Query $query): ?\WP_Post
+    {
+        $postId = (int) $query->get('p');
+        if ($postId > 0) {
+            $post = get_post($postId);
+
+            return ($post instanceof \WP_Post && $post->post_type === 'municipal_event')
+                ? $post
+                : null;
+        }
+
+        $postType = $query->get('post_type');
+        if (is_array($postType)) {
+            $postType = end($postType);
+        }
+        if ($postType !== 'municipal_event' && !$query->is_singular('municipal_event')) {
+            return null;
+        }
+
+        $name = $query->get('name');
+        if (!is_string($name) || $name === '') {
+            $queryVar = $query->get('municipal_event');
+            $name = is_string($queryVar) ? $queryVar : '';
+        }
+        if ($name === '') {
+            return null;
+        }
+
+        $posts = get_posts([
+            'name' => $name,
+            'post_type' => 'municipal_event',
+            'post_status' => ['publish', 'archived'],
+            'numberposts' => 1,
+            'no_found_rows' => true,
+        ]);
+
+        return isset($posts[0]) && $posts[0] instanceof \WP_Post ? $posts[0] : null;
     }
 
     /**
