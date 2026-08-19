@@ -27,11 +27,9 @@ class App
         // Initialize custom post type
         new MunicipalEvent();
 
-        // After other plugins that may register the same slug (e.g. Simpleview) so permalink/single stays viewable.
-        add_action('init', [$this, 'registerArchivedPostStatus'], 25);
-
-        // Front-end archive should only list published municipal events.
+        add_action('init', [$this, 'registerArchivedPostStatus'], 10);
         add_action('pre_get_posts', [$this, 'limitFrontEndArchiveToPublished'], 10, 1);
+        add_action('pre_get_posts', [$this, 'allowArchivedMunicipalEventSingular'], 10, 1);
         add_filter('quick_edit_statuses', [$this, 'addQuickEditArchivedStatus'], 10, 4);
 
         // Enqueue styles
@@ -90,7 +88,7 @@ class App
     /**
      * Limit front-end municipal_event archives to published posts only.
      *
-     * Archived posts can still be reached via direct permalink.
+     * @param WP_Query $query The query.
      */
     public function limitFrontEndArchiveToPublished(WP_Query $query): void
     {
@@ -126,6 +124,61 @@ class App
         if (empty($status) || $status === 'publish') {
             $query->set('post_status', 'publish');
         }
+    }
+
+    /**
+     * Keep archived municipal event single URLs reachable for anonymous visitors.
+     *
+     * WordPress hides non-public statuses on singular queries unless they are
+     * listed in `post_status`. Listings stay on `publish` only.
+     *
+     * @param WP_Query $query The query.
+     */
+    public function allowArchivedMunicipalEventSingular(WP_Query $query): void
+    {
+        if (is_admin() || !$query->is_main_query() || !$query->is_singular()) {
+            return;
+        }
+
+        if (!$this->isMunicipalEventSingularQuery($query)) {
+            return;
+        }
+
+        $status = $query->get('post_status');
+        if (!empty($status) && $status !== 'publish') {
+            return;
+        }
+
+        $query->set('post_status', ['publish', 'archived']);
+    }
+
+    /**
+     * Whether this singular query is for municipal_event.
+     *
+     * @param WP_Query $query The query.
+     */
+    private function isMunicipalEventSingularQuery(WP_Query $query): bool
+    {
+        if ($query->is_singular('municipal_event')) {
+            return true;
+        }
+
+        $postType = $query->get('post_type');
+        if (is_array($postType)) {
+            $postType = end($postType);
+        }
+        if ($postType === 'municipal_event') {
+            return true;
+        }
+
+        $postId = (int) $query->get('p');
+        if ($postId <= 0) {
+            return false;
+        }
+
+        $post = get_post($postId);
+
+        return $post instanceof \WP_Post && $post->post_type === 'municipal_event';
     }
 
     /**
