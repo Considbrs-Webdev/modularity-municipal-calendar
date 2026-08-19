@@ -129,8 +129,8 @@ class App
     /**
      * Keep archived municipal event single URLs reachable for anonymous visitors.
      *
-     * WordPress hides non-public statuses on singular queries unless they are
-     * listed in `post_status`. Listings stay on `publish` only.
+     * Only runs when the requested post is already `archived`. Draft, pending,
+     * private, and future previews keep WordPress default singular status handling.
      *
      * @param WP_Query $query The query.
      */
@@ -140,12 +140,13 @@ class App
             return;
         }
 
-        if (!$this->isMunicipalEventSingularQuery($query)) {
+        $status = $query->get('post_status');
+        if (!empty($status) && $status !== 'publish') {
             return;
         }
 
-        $status = $query->get('post_status');
-        if (!empty($status) && $status !== 'publish') {
+        $post = $this->getRequestedMunicipalEvent($query);
+        if ($post === null || $post->post_status !== 'archived') {
             return;
         }
 
@@ -153,32 +154,47 @@ class App
     }
 
     /**
-     * Whether this singular query is for municipal_event.
+     * Resolve the municipal event targeted by a singular query.
      *
      * @param WP_Query $query The query.
      */
-    private function isMunicipalEventSingularQuery(WP_Query $query): bool
+    private function getRequestedMunicipalEvent(WP_Query $query): ?\WP_Post
     {
-        if ($query->is_singular('municipal_event')) {
-            return true;
+        $postId = (int) $query->get('p');
+        if ($postId > 0) {
+            $post = get_post($postId);
+
+            return ($post instanceof \WP_Post && $post->post_type === 'municipal_event')
+                ? $post
+                : null;
         }
 
         $postType = $query->get('post_type');
         if (is_array($postType)) {
             $postType = end($postType);
         }
-        if ($postType === 'municipal_event') {
-            return true;
+        if ($postType !== 'municipal_event' && !$query->is_singular('municipal_event')) {
+            return null;
         }
 
-        $postId = (int) $query->get('p');
-        if ($postId <= 0) {
-            return false;
+        $name = $query->get('name');
+        if (!is_string($name) || $name === '') {
+            $queryVar = $query->get('municipal_event');
+            $name = is_string($queryVar) ? $queryVar : '';
+        }
+        if ($name === '') {
+            return null;
         }
 
-        $post = get_post($postId);
+        $posts = get_posts([
+            'name' => $name,
+            'post_type' => 'municipal_event',
+            'post_status' => ['publish', 'archived'],
+            'numberposts' => 1,
+            'no_found_rows' => true,
+        ]);
 
-        return $post instanceof \WP_Post && $post->post_type === 'municipal_event';
+        return isset($posts[0]) && $posts[0] instanceof \WP_Post ? $posts[0] : null;
     }
 
     /**
